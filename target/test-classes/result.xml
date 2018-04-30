@@ -3,9 +3,9 @@
 	<bean id="pqr" class="examples.ExampleBean">
 		<!-- setter injection using -->
 		<property name="beanTwo" ref="pqr"/>
-		<property name="integerProperty" value="!Here:Integer:Foo"/>
+		<property name="integerProperty" value="!String"/>
 	</bean>
 	<bean id="pqr" class="examples.AnotherBean">
-		<property name="pqr" value="!Here:String:Bar"/>
+		<property name="pqr" value="String"/>
 	</bean>
 </beans>

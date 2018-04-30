@@ -13,8 +13,8 @@ public class ModifyingInputStreamTest {
 
 	@Test
 	public void testRead() throws IOException {
-		byte[] input = "abc abc abc".getBytes();
-		String result = "pqr pqr pqr";
+		byte[] input = "abc abc abc def".getBytes();
+		String result = "pqr pqr pqr def";
 		try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
 				InputStream is = new ModifyingInputStream(new ByteArrayInputStream(input), "abc".getBytes(),
 						"pqr".getBytes());) {
@@ -22,7 +22,7 @@ public class ModifyingInputStreamTest {
 			while ((b = is.read()) > 0) {
 				bos.write(b);
 			}
-			assertTrue(result.toString().equals(bos.toString("UTF-8")));
+			assertTrue(result.equals(bos.toString("UTF-8")));
 		}
 
 	}

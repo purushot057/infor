@@ -53,11 +53,17 @@ public class TextXmlFileProcessorImpl implements FileProcessor {
 		LOG.info("Started processing file ");
 
 		try (FileInputStream is = new FileInputStream(new File(targetLocation));
-				FileOutputStream os = new FileOutputStream(new File(resultLocation));) {
+				FileOutputStream os = new FileOutputStream(new File(resultLocation))) {
+			// Chunk of size 4096 bytes
+			// Can be changed as per need
 			byte[] buf = new byte[4096];
 			int read = 0;
+			// let's process the file in chunks as file size can be in some
+			// gigabytes
+			// read chunk of size 4096 bytes at a time and call replace method
+			// for each chunk
 			while ((read = is.read(buf)) > 0) {
-				byte[] ret = replaceInByteArray(buf, toReplace, replaceWith);
+				byte[] ret = replaceWithinByteArray(buf, toReplace, replaceWith);
 				os.write(ret);
 			}
 		} catch (IOException e) {
@@ -67,7 +73,9 @@ public class TextXmlFileProcessorImpl implements FileProcessor {
 		LOG.info("End processing file ");
 	}
 
-	private byte[] replaceInByteArray(byte[] buf, String toBeReplaced, String replaceWith) {
+	// This method will perform the replace operation at byte level to have
+	// optimum performance
+	private byte[] replaceWithinByteArray(byte[] buf, String toBeReplaced, String replaceWith) {
 		LOG.info("Replace within byte array started");
 		ByteArrayInputStream bis = new ByteArrayInputStream(buf);
 		byte[] search = new byte[0];
@@ -82,9 +90,9 @@ public class TextXmlFileProcessorImpl implements FileProcessor {
 
 		try (InputStream mis = new ModifyingInputStream(bis, search, replacement);
 				ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
-			int b = 0;
-			while ((b = mis.read()) > 0) {
-				bos.write(b);
+			int read = 0;
+			while ((read = mis.read()) > 0) {
+				bos.write(read);
 			}
 			return bos.toByteArray();
 		} catch (IOException e) {

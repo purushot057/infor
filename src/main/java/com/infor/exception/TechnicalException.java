@@ -1,7 +1,7 @@
 package com.infor.exception;
 
 /**
- * Exception class to incorporate all business use case failures
+ * Exception class to incorporate all custom exceptions in this project
  * 
  * @author Purushottam S.
  * @version 1.0

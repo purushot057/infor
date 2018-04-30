@@ -1,7 +1,7 @@
 package com.infor.service;
 
 /**
- * FileProcessor interface defines abstract methods to be overidden by
+ * FileProcessor interface defines abstract methods to be overridden by
  * implementation classes
  * 
  * @author Purushottam S.

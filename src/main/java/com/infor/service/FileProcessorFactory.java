@@ -1,5 +1,7 @@
 package com.infor.service;
 
+import com.infor.utilities.Validator;
+
 /**
  * Factory class for FileProcessor interface
  * 
@@ -8,12 +10,13 @@ package com.infor.service;
  *
  */
 public class FileProcessorFactory {
-	
+
 	private FileProcessorFactory() {
-		// Ensures this class is not instantiated
+		// Let it not be instantiated
 	}
 
-	public static FileProcessor getFileProcessor(String fileType) {
+	public static FileProcessor getFileProcessor(String fileType) throws IllegalArgumentException {
+		Validator.validateFileType(fileType);
 		if (fileType.equalsIgnoreCase("text") || fileType.equalsIgnoreCase("xml")) {
 			return new TextXmlFileProcessorImpl();
 		}

@@ -1,7 +1,5 @@
 package com.infor.utilities;
 
-import com.infor.exception.TechnicalException;
-
 /**
  * This class contains the validation methods that are invoked before processing
  * the file
@@ -12,9 +10,9 @@ import com.infor.exception.TechnicalException;
  */
 public class Validator {
 
-	public static void validateFileType(String type) throws TechnicalException {
+	public static void validateFileType(String type) {
 		if (!(type.equalsIgnoreCase("text") || type.equalsIgnoreCase("xml"))) {
-			throw new TechnicalException("File format not supported");
+			throw new IllegalArgumentException("File format not supported");
 		}
 	}
 
