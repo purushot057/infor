@@ -1,39 +1,40 @@
 package com.infor.service;
 
 /**
- * FileProcessor class defines abstract methods to be overidden by
+ * FileProcessor interface defines abstract methods to be overidden by
  * implementation classes
  * 
  * @author Purushottam S.
  * @version 1.0
  *
  */
-public abstract class FileProcessor {
-	
-	protected String toReplace;
-	protected String replaceWith;
-	
-	public FileProcessor(String toReplace, String replaceWith) {
-		this.toReplace = toReplace;
-		this.replaceWith = replaceWith;
-	}
+public interface FileProcessor {
 
 	/**
-	 * This function replaces each string in the file that matches with `toReplace` with 
-	 * `replaceWith` 
+	 * This function replaces each string in the file that matches with
+	 * `toReplace` with the one in `replaceWith`
+	 * 
+	 * @param toReplace
+	 *            String to be replaced
+	 * @param replaceWith
+	 *            String to replace with
 	 * 
 	 */
-	abstract public void processFile();
+	void processFile(String toReplace, String replaceWith);
 
 	/**
-	 * This function replaces each string in the file that matches with `toReplace` with 
-	 * `replaceWith`
+	 * This function replaces each string in the file that matches with
+	 * `toReplace` with the one in `replaceWith`
 	 * 
 	 * @param targetLocation
-	 *            targetFile
+	 *            String representation of targetFile
 	 * @param resultLocation
-	 *            resultFile
+	 *            String representation of resultFile
+	 * @param toReplace
+	 *            String to be replaced
+	 * @param replaceWith
+	 *            String to replace with
 	 */
-	abstract public void processFile(String targetLocation, String resultLocation);
+	void processFile(String targetLocation, String resultLocation, String toReplace, String replaceWith);
 
 }

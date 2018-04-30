@@ -14,9 +14,9 @@ public class App {
 		} else if (args.length < 3) {
 			throw new RuntimeException("Insufficient Arguments");
 		} else {
-			new Validator().validateFileType(args[0]);
-			FileProcessor fileProcessor = FileProcessorFactory.getFileProcessor(args[0], args[1], args[2]);
-			fileProcessor.processFile();
+			Validator.validateFileType(args[0]);
+			FileProcessor fileProcessor = FileProcessorFactory.getFileProcessor(args[0]);
+			fileProcessor.processFile(args[1], args[2]);
 		}
 
 	}

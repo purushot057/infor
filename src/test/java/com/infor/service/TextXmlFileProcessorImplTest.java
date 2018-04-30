@@ -16,20 +16,26 @@ public class TextXmlFileProcessorImplTest {
 
 	@Test
 	public void testProcessFile_textFormat() throws FileNotFoundException, IOException {
-		fileProcessor = FileProcessorFactory.getFileProcessor("text", "abc", "pqr");
-		File file = new File("C:\\data\\result1.txt");
-		fileProcessor.processFile("C:\\data\\demo.txt", "C:\\data\\result.txt");
-		String result = IOUtils.toString(new FileInputStream(file), "UTF-8");
+		fileProcessor = FileProcessorFactory.getFileProcessor("text");
+		File resultFile = new File(getClass().getClassLoader().getResource("result.txt").getFile());
+		File targetFile = new File(getClass().getClassLoader().getResource("demo.txt").getFile());
+		fileProcessor.processFile(getClass().getClassLoader().getResource("demo.txt").getFile(),
+				getClass().getClassLoader().getResource("result.txt").getFile(), "abc", "pqr");
+		String result = IOUtils.toString(new FileInputStream(resultFile), "UTF-8");
 		Assert.assertFalse(result.contains("abc"));
+		Assert.assertEquals(resultFile.getTotalSpace(), targetFile.getTotalSpace());
 	}
 
 	@Test
 	public void testProcessFile_xmlFormat() throws FileNotFoundException, IOException {
-		fileProcessor = FileProcessorFactory.getFileProcessor("xml", "=\"abc\"", "=\"pqr\"");
-		File file = new File("C:\\data\\result.xml");
-		fileProcessor.processFile("C:\\data\\demo.xml", "C:\\data\\result.xml");
-		String result = IOUtils.toString(new FileInputStream(file), "UTF-8");
-		Assert.assertFalse(result.contains("abc"));
+		fileProcessor = FileProcessorFactory.getFileProcessor("xml");
+		File resultFile = new File(getClass().getClassLoader().getResource("result.xml").getFile());
+		File targetFile = new File(getClass().getClassLoader().getResource("demo.xml").getFile());
+		fileProcessor.processFile(getClass().getClassLoader().getResource("demo.xml").getFile(),
+				getClass().getClassLoader().getResource("result.xml").getFile(), "=\"abc\"", "=\"pqr\"");
+		String result = IOUtils.toString(new FileInputStream(resultFile), "UTF-8");
+		Assert.assertFalse(result.contains("=\"abc\""));
+		Assert.assertEquals(resultFile.getTotalSpace(), targetFile.getTotalSpace());
 	}
 
 }

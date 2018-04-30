@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 /**
- * This class holds the methods that fundamentally modifies the input stream
+ * This utility class holds the methods that fundamentally modifies the input stream
  * 
  * @author Purushottam S.
  * @version 1.0
@@ -18,15 +18,15 @@ public class ModifyingInputStream extends FilterInputStream {
 
 	private Queue<Integer> inQueue;
 	private Queue<Integer> outQueue;
-	private final byte[] search;
-	private final byte[] replacement;
+	private final byte[] searchBytes;
+	private final byte[] replacementBytes;
 
 	public ModifyingInputStream(InputStream in, byte[] search, byte[] replacement) {
 		super(in);
 		this.inQueue = new LinkedList<>();
 		this.outQueue = new LinkedList<>();
-		this.search = search;
-		this.replacement = replacement;
+		this.searchBytes = search;
+		this.replacementBytes = replacement;
 	}
 
 	@Override
@@ -35,12 +35,12 @@ public class ModifyingInputStream extends FilterInputStream {
 		while (outQueue.isEmpty()) {
 			readAhead();
 			if (isMatchFound()) {
-				for (byte a : search) {
+				for (byte searchByte : searchBytes) {
 					inQueue.remove();
 				}
 
-				for (byte b : replacement) {
-					outQueue.offer((int) b);
+				for (byte replacementByte : replacementBytes) {
+					outQueue.offer((int) replacementByte);
 				}
 			} else {
 				outQueue.add(inQueue.remove());
@@ -49,56 +49,20 @@ public class ModifyingInputStream extends FilterInputStream {
 		return outQueue.remove();
 	}
 
-	@Override
-	public int read(byte b[]) throws IOException {
-		return read(b, 0, b.length);
-	}
-
-	// Used from InputStream implementation Need to use
-	// `read()` from this class
-	@Override
-	public int read(byte[] b, int off, int len) throws IOException {
-		if (b == null) {
-			throw new NullPointerException();
-		} else if (off < 0 || len < 0 || len > b.length - off) {
-			throw new IndexOutOfBoundsException();
-		} else if (len == 0) {
-			return 0;
-		}
-
-		int c = read();
-		if (c == -1) {
-			return -1;
-		}
-		b[off] = (byte) c;
-
-		int i = 1;
-		try {
-			for (; i < len; i++) {
-				c = read();
-				if (c == -1) {
-					break;
-				}
-				b[off + i] = (byte) c;
-			}
-		} catch (IOException ee) {
-		}
-		return i;
-	}
-
+	// Check if match exists for each byte in searchBytes
 	private boolean isMatchFound() {
 		Iterator<Integer> iterator = inQueue.iterator();
-		for (byte b : search) {
-			if (!iterator.hasNext() || b != iterator.next()) {
+		for (byte searchByte : searchBytes) {
+			if (!iterator.hasNext() || searchByte != iterator.next()) {
 				return false;
 			}
 		}
 		return true;
 	}
 
+	// Keep reading until max length of searchBytes
 	private void readAhead() throws IOException {
-		// Work up some look-ahead.
-		while (inQueue.size() < search.length) {
+		while (inQueue.size() < searchBytes.length) {
 			int next = super.read();
 			inQueue.offer(next);
 			if (next == -1) {

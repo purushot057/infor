@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans>
+	<bean id="abc" class="examples.ExampleBean">
+		<!-- setter injection using -->
+		<property name="beanTwo" ref="abc"/>
+		<property name="integerProperty" value="!String"/>
+	</bean>
+	<bean id="abc" class="examples.AnotherBean">
+		<property name="abc" value="String"/>
+	</bean>
+</beans>

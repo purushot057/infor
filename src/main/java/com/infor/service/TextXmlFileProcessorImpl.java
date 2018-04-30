@@ -23,16 +23,12 @@ import com.infor.utilities.ModifyingInputStream;
  * @version 1.0
  *
  */
-public class TextXmlFileProcessorImpl extends FileProcessor {
+public class TextXmlFileProcessorImpl implements FileProcessor {
 
 	private static final Logger LOG = LoggerFactory.getLogger(TextXmlFileProcessorImpl.class);
 
-	public TextXmlFileProcessorImpl(String toReplace, String replaceWith) {
-		super(toReplace, replaceWith);
-	}
-
 	@Override
-	public void processFile() {
+	public void processFile(String toReplace, String replaceWith) {
 		LOG.info("Started processing file");
 
 		String targetLocation = null;
@@ -47,13 +43,13 @@ public class TextXmlFileProcessorImpl extends FileProcessor {
 		} catch (IOException ex) {
 			LOG.error("Error loading properties file ", ex);
 		}
-		processFile(targetLocation, resultLocation);
+		processFile(targetLocation, resultLocation, toReplace, replaceWith);
 
 		LOG.info("End processing file ");
 	}
 
 	@Override
-	public void processFile(String targetLocation, String resultLocation) {
+	public void processFile(String targetLocation, String resultLocation, String toReplace, String replaceWith) {
 		LOG.info("Started processing file ");
 
 		try (FileInputStream is = new FileInputStream(new File(targetLocation));
@@ -96,5 +92,4 @@ public class TextXmlFileProcessorImpl extends FileProcessor {
 		}
 		return new byte[0];
 	}
-
 }
